@@ -25,6 +25,26 @@ customCommands:
     command: "git checkout -b {{.Form.BranchType}}/{{.Form.BranchName}}"
     loadingText: 'Creating branch'
 
+
+  - key: 'C'
+    context: 'localBranches'
+    prompts:
+      - type: 'menu'
+        title: 'Select local branch to push'
+        key: 'TargetBranch'
+        options:  
+          - name: 'dev'
+            description: 'dev'
+            value: 'dev'
+          - name: 'main'
+            description: 'main'
+            value: 'main'
+    command: |
+      CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+      git push --set-upstream origin $CURRENT_BRANCH
+    loadingText: 'Pushing Current Branch'
+    
+
   - key: 'D'
     context: 'localBranches'
     prompts:
