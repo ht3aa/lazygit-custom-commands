@@ -28,17 +28,6 @@ customCommands:
 
   - key: 'C'
     context: 'localBranches'
-    prompts:
-      - type: 'menu'
-        title: 'Select local branch to push'
-        key: 'TargetBranch'
-        options:  
-          - name: 'dev'
-            description: 'dev'
-            value: 'dev'
-          - name: 'main'
-            description: 'main'
-            value: 'main'
     command: |
       CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
       git push --set-upstream origin $CURRENT_BRANCH
