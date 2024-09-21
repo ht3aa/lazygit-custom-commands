@@ -1,4 +1,7 @@
 customCommands:
+
+    # TODO: when creating new branch add a counter to the name like feature-001/... feature-002
+
   - key: 'N'
     context: 'localBranches'
     prompts:
@@ -22,9 +25,23 @@ customCommands:
         title: 'What is the new branch name?'
         key: 'BranchName'
         initialValue: ''
-    command: "git checkout -b {{.Form.BranchType}}/{{.Form.BranchName}}"
+    command: |
+      BRANCH_TYPE="{{.Form.BranchType}}"
+      BRANCH_NAME="{{.Form.BranchName}}"
+      
+      # Get the highest existing branch number
+      LAST_BRANCH=$(git branch --list "$BRANCH_TYPE-[0-9][0-9][0-9]/*" | grep -o "$BRANCH_TYPE-[0-9][0-9][0-9]" | sed 's/[^0-9]*//g' | sort -nr | head -n1)
+      
+      # Increment the number for the new branch
+      if [ -z "$LAST_BRANCH" ]; then
+        NEW_BRANCH_NUMBER="001"
+      else
+        NEW_BRANCH_NUMBER=$(printf "%03d" $((LAST_BRANCH + 1)))
+      fi
+      
+      # Create the new branch with the incremented number
+      git checkout -b "$BRANCH_TYPE-$NEW_BRANCH_NUMBER/$BRANCH_NAME"
     loadingText: 'Creating branch'
-
 
   - key: 'C'
     context: 'localBranches'
