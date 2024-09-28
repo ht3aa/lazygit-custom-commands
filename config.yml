@@ -1,7 +1,5 @@
 customCommands:
 
-    # TODO: when creating new branch add a counter to the name like feature-001/... feature-002
-
   - key: 'N'
     context: 'localBranches'
     prompts:
@@ -25,12 +23,13 @@ customCommands:
         title: 'What is the new branch name?'
         key: 'BranchName'
         initialValue: ''
+
     command: |
       BRANCH_TYPE="{{.Form.BranchType}}"
       BRANCH_NAME="{{.Form.BranchName}}"
       
       # Get the highest existing branch number across all types
-      LAST_BRANCH=$(git branch --list "*-[0-9]/*" | grep -oE '[0-9]+' | sort -n | tail -n1)
+      LAST_BRANCH=$(git branch --list "*[0-9]*" | grep -oE "([0-9]+)"  | grep -oE '[0-9]+' | sort -n | tail -n1)
       
       # Increment the number for the new branch
       if [ -z "$LAST_BRANCH" ]; then
