@@ -29,7 +29,7 @@ customCommands:
       BRANCH_NAME="{{.Form.BranchName}}"
       
       # Get the highest existing branch number across all types
-      LAST_BRANCH=$(git branch --list "*[0-9]*" | grep -oE "([0-9]+)"  | grep -oE '[0-9]+' | sort -n | tail -n1)
+      LAST_BRANCH=$(git branch --list "*-[0-9]*" | grep -oE "(-[0-9]+)"  | grep -oE '[0-9]+' | sort -n | tail -n1)
       
       # Increment the number for the new branch
       if [ -z "$LAST_BRANCH" ]; then
