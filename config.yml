@@ -1,3 +1,43 @@
+gui: 
+  # DRACULA
+  theme:
+    activeBorderColor:
+      - "#FF79C6"
+      - bold
+    inactiveBorderColor:
+      - "#BD93F9"
+
+    searchingActiveBorderColor:
+      - "#8BE9FD"
+      - bold
+
+    optionsTextColor:
+      - "#6272A4"
+
+    selectedLineBgColor:
+      - "#6272A4"
+
+    inactiveViewSelectedLineBgColor:
+      - bold
+
+    cherryPickedCommitFgColor:
+      - "#6272A4"
+
+    cherryPickedCommitBgColor:
+      - "#8BE9FD"
+
+    markedBaseCommitFgColor:
+      - "#8BE9FD"
+
+    markedBaseCommitBgColor:
+      - "#F1FA8C"
+
+    unstagedChangesColor:
+      - "#FF5555"
+
+    defaultFgColor:
+      - "#F8F8F2"
+
 customCommands:
 
   - key: 'N'
@@ -27,19 +67,22 @@ customCommands:
     command: |
       BRANCH_TYPE="{{.Form.BranchType}}"
       BRANCH_NAME="{{.Form.BranchName}}"
-      
+
       # Get the highest existing branch number across all types
-      LAST_BRANCH=$(git branch --list "*-[0-9]*" | grep -oE "(-[0-9]+)"  | grep -oE '[0-9]+' | sort -n | tail -n1)
-      
+      LAST_BRANCH=$(git branch --list "*-[0-9]*" | grep -oE "(-[0-9]+)" | grep -oE '[0-9]+' | sort -n | tail -n1)
+
       # Increment the number for the new branch
       if [ -z "$LAST_BRANCH" ]; then
         NEW_BRANCH_NUMBER="1"
       else
         NEW_BRANCH_NUMBER=$((LAST_BRANCH + 1))
       fi
-      
-      # Create the new branch with the incremented number
-      git checkout -b "$BRANCH_TYPE-$NEW_BRANCH_NUMBER/$BRANCH_NAME"
+
+      # Get the current branch name
+      CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+      # Create the new branch with the incremented number and current branch name
+      git checkout -b "$BRANCH_TYPE-$NEW_BRANCH_NUMBER/$BRANCH_NAME<-$CURRENT_BRANCH"
     loadingText: 'Creating branch'
 
 
