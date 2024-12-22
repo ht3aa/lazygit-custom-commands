@@ -118,4 +118,24 @@ customCommands:
       git merge $CURRENT_BRANCH
       git branch -d $CURRENT_BRANCH
     loadingText: 'Pushing and merging branch'
-    
+
+  - key: "X"
+    context: 'localBranches'
+    command: |
+      # Get the current branch name
+      CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+      # Check if the branch ends with "-no-code"
+      if [[ "$CURRENT_BRANCH" == *"-no-code" ]]; then
+        # Remove the "-no-code" suffix
+        NEW_BRANCH_NAME="${CURRENT_BRANCH%-no-code}"
+      else
+        # Append "-no-code" to the branch name
+        NEW_BRANCH_NAME="${CURRENT_BRANCH}-no-code"
+      fi
+
+      # Rename the branch locally
+      git branch -m "$NEW_BRANCH_NAME"
+
+    loadingText: 'Toggling -no-code suffix on branch name'
+
