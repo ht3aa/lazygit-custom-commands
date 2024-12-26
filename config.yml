@@ -84,8 +84,11 @@ customCommands:
       # Get the current branch name
       CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
+      # Get the current date in YYYY-mm-dd format
+      CURRENT_DATE=$(date +"%Y-%m-%d")
+
       # Create the new branch with the incremented number and current branch name
-      git checkout -b "$BRANCH_TYPE-$NEW_BRANCH_NUMBER/$BRANCH_NAME-$CURRENT_BRANCH"
+      git checkout -b "$BRANCH_TYPE-$NEW_BRANCH_NUMBER/$BRANCH_NAME-from-$CURRENT_BRANCH-$CURRENT_DATE"
     loadingText: 'Creating branch'
 
 
