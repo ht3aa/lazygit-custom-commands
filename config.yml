@@ -62,6 +62,9 @@ customCommands:
           - name: 'urgent'
             description: 'a urgent branch'
             value: 'urgent'
+          - name: 'rollback'
+            description: 'a rollback branch'
+            value: 'rollback'
       - type: 'input'
         title: 'What is the new branch name?'
         key: 'BranchName'
@@ -82,13 +85,13 @@ customCommands:
       fi
 
       # Get the current branch name
-      CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+      CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD | cut -d'/' -f1)
 
       # Get the current date in YYYY-mm-dd format
       CURRENT_DATE=$(date +"%Y_%m_%d")
 
       # Create the new branch with the incremented number and current branch name
-      git checkout -b "$BRANCH_TYPE-$NEW_BRANCH_NUMBER/$BRANCH_NAME-from-$CURRENT_BRANCH_$CURRENT_DATE"
+      git checkout -b "$BRANCH_TYPE-$NEW_BRANCH_NUMBER/$BRANCH_NAME-from-$CURRENT_BRANCH-$CURRENT_DATE"
     loadingText: 'Creating branch'
 
 
