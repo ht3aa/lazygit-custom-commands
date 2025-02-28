@@ -66,34 +66,34 @@ customCommands:
             description: 'a rollback branch'
             value: 'rollback'
       - type: 'input'
+        title: 'Enter the branch ID (e.g., 1, 2, 3):'
+        key: 'BranchId'
+        initialValue: ''
+      - type: 'input'
         title: 'What is the new branch name?'
         key: 'BranchName'
         initialValue: ''
 
     command: |
       BRANCH_TYPE="{{.Form.BranchType}}"
+      BRANCH_ID="{{.Form.BranchId}}"
       BRANCH_NAME="{{.Form.BranchName}}"
 
-      # Get the highest existing branch number across all types
-      LAST_BRANCH=$(git branch --list "*-[0-9]*" | grep -oE "(-[0-9]+)" | grep -oE '[0-9]+' | sort -n | tail -n1)
-
-      # Increment the number for the new branch
-      if [ -z "$LAST_BRANCH" ]; then
-        NEW_BRANCH_NUMBER="1"
-      else
-        NEW_BRANCH_NUMBER=$((LAST_BRANCH + 1))
+      # Validate that the branch ID is a number
+      if ! [[ "$BRANCH_ID" =~ ^[0-9]+$ ]]; then
+        echo "Error: Branch ID must be a number."
+        exit 1
       fi
 
       # Get the current branch name
       CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD | cut -d'/' -f1)
 
       # Get the current date in YYYY-mm-dd format
-      CURRENT_DATE=$(date +"%Y_%m_%d")
+      CURRENT_DATE=$(date +"%Y_%m_%d_%I_%M%p")
 
-      # Create the new branch with the incremented number and current branch name
-      git checkout -b "$BRANCH_TYPE-$NEW_BRANCH_NUMBER/$BRANCH_NAME-from-$CURRENT_BRANCH-$CURRENT_DATE"
+      # Create the new branch with the provided branch ID and current branch name
+      git checkout -b "$BRANCH_TYPE-$BRANCH_ID/$BRANCH_NAME-from-$CURRENT_BRANCH-$CURRENT_DATE"
     loadingText: 'Creating branch'
-
 
 
   - key: 'C'
