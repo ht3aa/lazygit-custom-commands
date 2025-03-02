@@ -79,11 +79,6 @@ customCommands:
       BRANCH_ID="{{.Form.BranchId}}"
       BRANCH_NAME="{{.Form.BranchName}}"
 
-      # Validate that the branch ID is a number
-      if ! [[ "$BRANCH_ID" =~ ^[0-9]+$ ]]; then
-        echo "Error: Branch ID must be a number."
-        exit 1
-      fi
 
       # Get the current branch name
       CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD | cut -d'/' -f1)
